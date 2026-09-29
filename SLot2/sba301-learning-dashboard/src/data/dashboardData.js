@@ -1,16 +1,5 @@
-export const course = {
-  code: "SBA301",
-  name: "Integrate Single Page Application with Spring Boot",
-  slot: "Slot 02",
-  topic: "ReactJS Fundamentals"
-};
-
-export const student = {
-  name: "Trần Hiển Vinh",
-  studentId: "CE190881",
-  group: "Group 3 - SE1910",
-  role: "Learner / Developer"
-};
+export { course, courseResources } from "./course";
+export { student } from "./student";
 
 export const learningItems = [
   "React mental model",
@@ -23,20 +12,29 @@ export const learningItems = [
   "Git checkpoint"
 ];
 
+// E3: One tool with status 'Pending' to demonstrate conditional ternary styling
 export const environmentTools = [
-  { name: "Node.js", status: "Ready" },
-  { name: "npm", status: "Ready" },
+  { name: "Node.js (v24)", status: "Ready" },
+  { name: "npm (v11)", status: "Ready" },
   { name: "IntelliJ IDEA", status: "Ready" },
-  { name: "Vite", status: "Ready" },
-  { name: "Git", status: "Ready" }
+  { name: "Vite 5.x", status: "Ready" },
+  { name: "Git CLI", status: "Ready" },
+  { name: "Spring Boot Backend (Slot 12+)", status: "Pending" }
 ];
 
 export const groupProject = {
-  name: "Student Learning Dashboard",
-  targetUsers: "Students and Lecturers of FPT University",
+  name: "FUNewsManagementSystem",
+  targetUsers: "Students, Staff, and System Administrators",
   coreFeatures: [
-    "Course & Student Profile Display",
-    "Environment Status & Learning Checklist Tracking",
-    "Architecture Flow & Mental Model Visualization"
+    "Role-based Dashboard & Article Management",
+    "Real-time News Publishing & Category Filtering",
+    "Audit Trail, Tagging & Secure Authentication"
   ]
 };
+
+// E4: Debug evidence checklist
+export const debugChecklist = [
+  { id: "term", label: "Terminal checked - No build/compile errors", done: true },
+  { id: "cons", label: "Browser Console checked - 0 errors/warnings", done: true },
+  { id: "git", label: "Git committed - Working tree clean with checkpoint", done: true }
+];
