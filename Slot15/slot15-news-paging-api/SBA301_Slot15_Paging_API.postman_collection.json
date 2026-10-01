@@ -1,0 +1,88 @@
+{
+  "info": {
+    "name": "SBA301 Slot 15 Versioning & Paging API",
+    "description": "Postman Collection for Slot 15 API Versioning, Paging, and Sorting",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "T01 - Path Versioning v1",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/v1/news", "host": ["{{baseUrl}}"], "path": ["api", "v1", "news"] }
+      }
+    },
+    {
+      "name": "T02 - Path Versioning v2",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/v2/news", "host": ["{{baseUrl}}"], "path": ["api", "v2", "news"] }
+      }
+    },
+    {
+      "name": "T03 - Query Versioning v1",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/news/version?version=1", "host": ["{{baseUrl}}"], "path": ["api", "news", "version"], "query": [{ "key": "version", "value": "1" }] }
+      }
+    },
+    {
+      "name": "T04 - Header Versioning v2",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "X-API-Version", "value": "2" }],
+        "url": { "raw": "{{baseUrl}}/api/news/version", "host": ["{{baseUrl}}"], "path": ["api", "news", "version"] }
+      }
+    },
+    {
+      "name": "T05 - Media Type Versioning v1",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/vnd.funews.v1+json" }],
+        "url": { "raw": "{{baseUrl}}/api/news/version", "host": ["{{baseUrl}}"], "path": ["api", "news", "version"] }
+      }
+    },
+    {
+      "name": "T06 - Paging Page 0 Size 5",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/news?page=0&size=5", "host": ["{{baseUrl}}"], "path": ["api", "news"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "5" }] }
+      }
+    },
+    {
+      "name": "T07 - Paging Page 1 Size 5",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/news?page=1&size=5", "host": ["{{baseUrl}}"], "path": ["api", "news"], "query": [{ "key": "page", "value": "1" }, { "key": "size", "value": "5" }] }
+      }
+    },
+    {
+      "name": "T08 - Sorting by Title ASC",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/news?page=0&size=5&sort=title,asc", "host": ["{{baseUrl}}"], "path": ["api", "news"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "5" }, { "key": "sort", "value": "title,asc" }] }
+      }
+    },
+    {
+      "name": "T09 - Slice Query (No count)",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/news/slice?page=0&size=5", "host": ["{{baseUrl}}"], "path": ["api", "news", "slice"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "5" }] }
+      }
+    },
+    {
+      "name": "T10 - Safe Guarded Endpoint",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/news/safe?page=0&size=10&sortBy=title&direction=asc", "host": ["{{baseUrl}}"], "path": ["api", "news", "safe"], "query": [{ "key": "page", "value": "0" }, { "key": "size", "value": "10" }, { "key": "sortBy", "value": "title" }, { "key": "direction", "value": "asc" }] }
+      }
+    }
+  ]
+}
