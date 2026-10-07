@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/orchids")
 public class OrchidController {
+
     private final IOrchidService orchidService;
 
     public OrchidController(IOrchidService orchidService) {
@@ -19,7 +20,9 @@ public class OrchidController {
 
     @GetMapping
     public List<Orchid> getAll(@RequestParam(required = false) String name) {
-        if (name != null && !name.isBlank()) return orchidService.searchByName(name);
+        if (name != null && !name.isBlank()) {
+            return orchidService.searchByName(name);
+        }
         return orchidService.getAll();
     }
 

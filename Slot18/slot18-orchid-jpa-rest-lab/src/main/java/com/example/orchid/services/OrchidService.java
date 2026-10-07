@@ -23,7 +23,9 @@ public class OrchidService implements IOrchidService {
     }
 
     @Override
-    public List<Orchid> getAll() { return orchidRepository.findAll(); }
+    public List<Orchid> getAll() {
+        return orchidRepository.findAll();
+    }
 
     @Override
     public List<Orchid> searchByName(String name) {
@@ -31,11 +33,13 @@ public class OrchidService implements IOrchidService {
     }
 
     @Override
-    public Optional<Orchid> getById(Long id) { return orchidRepository.findById(id); }
+    public Optional<Orchid> getById(Long id) {
+        return orchidRepository.findById(id);
+    }
 
     private OrchidCategory resolveCategory(Orchid orchid) {
         if (orchid.getOrchidCategory() == null ||
-            orchid.getOrchidCategory().getCategoryId() == null) {
+                orchid.getOrchidCategory().getCategoryId() == null) {
             throw new IllegalArgumentException("categoryId is required");
         }
         Long categoryId = orchid.getOrchidCategory().getCategoryId();
@@ -43,9 +47,16 @@ public class OrchidService implements IOrchidService {
                 .orElseThrow(() -> new IllegalArgumentException("Category not found: " + categoryId));
     }
 
+    private void validateOrchidName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("orchidName is required and cannot be blank");
+        }
+    }
+
     @Override
     @Transactional
     public Orchid create(Orchid orchid) {
+        validateOrchidName(orchid.getOrchidName());
         orchid.setOrchidID(null);
         orchid.setOrchidCategory(resolveCategory(orchid));
         return orchidRepository.save(orchid);
@@ -55,6 +66,7 @@ public class OrchidService implements IOrchidService {
     @Transactional
     public Optional<Orchid> update(Long id, Orchid input) {
         return orchidRepository.findById(id).map(existing -> {
+            validateOrchidName(input.getOrchidName());
             existing.setOrchidName(input.getOrchidName());
             existing.setIsNatural(input.getIsNatural());
             existing.setOrchidDescription(input.getOrchidDescription());
