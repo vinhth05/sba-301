@@ -1,0 +1,222 @@
+{
+  "info": {
+    "_postman_id": "sba301-slot22-crud-backend",
+    "name": "SBA301 - Slot 22 - Chapter 15 Part A - CRUD Backend",
+    "description": "Postman Collection for Slot 22 CRUD Backend (FUNewsManagementSystem Category API)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "T01 - GET All Categories (Pagination & Sort)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/categories?page=0&size=10&sort=categoryName,asc",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories"],
+          "query": [
+            { "key": "page", "value": "0" },
+            { "key": "size", "value": "10" },
+            { "key": "sort", "value": "categoryName,asc" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "T02 - GET Category By ID (Existing 200)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/categories/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories", "1"]
+        }
+      }
+    },
+    {
+      "name": "T03 - GET Category By ID (Missing 404)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/categories/32767",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories", "32767"]
+        }
+      }
+    },
+    {
+      "name": "T04 - POST Create Category (Valid 201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoryName\": \"Technology News\",\n  \"categoryDescription\": \"Technology and software engineering news\",\n  \"parentCategoryId\": null,\n  \"active\": true\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/categories",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories"]
+        }
+      }
+    },
+    {
+      "name": "T05 - POST Create Category (Invalid Validation 400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoryName\": \"\",\n  \"categoryDescription\": \"\",\n  \"active\": true\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/categories",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories"]
+        }
+      }
+    },
+    {
+      "name": "T06 - POST Create Category (Duplicate Name 409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoryName\": \"Technology News\",\n  \"categoryDescription\": \"Duplicate attempt\",\n  \"parentCategoryId\": null,\n  \"active\": true\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/categories",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories"]
+        }
+      }
+    },
+    {
+      "name": "T07 - PUT Update Category (Existing 200)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoryName\": \"Academic & Research News\",\n  \"categoryDescription\": \"Academic and research announcements\",\n  \"parentCategoryId\": null,\n  \"active\": true\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/categories/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories", "1"]
+        }
+      }
+    },
+    {
+      "name": "T08 - PUT Update Category (Missing ID 404)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"categoryName\": \"Nonexistent Category\",\n  \"categoryDescription\": \"Does not exist\",\n  \"parentCategoryId\": null,\n  \"active\": true\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/categories/32767",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories", "32767"]
+        }
+      }
+    },
+    {
+      "name": "T10 - DELETE Referenced Category (Business Conflict 409)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/categories/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories", "1"]
+        }
+      }
+    },
+    {
+      "name": "T09 - DELETE Unreferenced Category (Success 204)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/categories/4",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories", "4"]
+        }
+      }
+    },
+    {
+      "name": "T11 - Search Keyword (Ignore Case)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/categories?keyword=academic&page=0&size=5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories"],
+          "query": [
+            { "key": "keyword", "value": "academic" },
+            { "key": "page", "value": "0" },
+            { "key": "size", "value": "5" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "T12 - Pagination (page=0, size=2)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/categories?page=0&size=2",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "categories"],
+          "query": [
+            { "key": "page", "value": "0" },
+            { "key": "size", "value": "2" }
+          ]
+        }
+      }
+    }
+  ]
+}
