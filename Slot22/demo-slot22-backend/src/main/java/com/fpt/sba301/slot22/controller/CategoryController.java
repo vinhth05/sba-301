@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/categories")
-@CrossOrigin(origins = "*")
 public class CategoryController {
-
     private final CategoryService service;
 
     public CategoryController(CategoryService service) {

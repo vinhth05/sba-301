@@ -6,7 +6,6 @@ import com.fpt.sba301.slot22.entity.Category;
 import com.fpt.sba301.slot22.exception.BusinessConflictException;
 import com.fpt.sba301.slot22.exception.ResourceNotFoundException;
 import com.fpt.sba301.slot22.repository.CategoryRepository;
-import com.fpt.sba301.slot22.repository.NewsArticleRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-
     private final CategoryRepository repository;
-    private final NewsArticleRepository newsArticleRepository;
 
-    public CategoryServiceImpl(CategoryRepository repository, NewsArticleRepository newsArticleRepository) {
+    public CategoryServiceImpl(CategoryRepository repository) {
         this.repository = repository;
-        this.newsArticleRepository = newsArticleRepository;
     }
 
     @Override
@@ -28,7 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Page<CategoryResponse> findAll(String keyword, Pageable pageable) {
         Page<Category> page = (keyword == null || keyword.isBlank())
                 ? repository.findAll(pageable)
-                : repository.findByCategoryNameContainingIgnoreCase(keyword.trim(), pageable);
+                : repository.findByCategoryNameContainingIgnoreCase(keyword, pageable);
         return page.map(this::toResponse);
     }
 
@@ -41,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public CategoryResponse create(CategoryRequest request) {
-        if (repository.existsByCategoryNameIgnoreCase(request.categoryName().trim())) {
+        if (repository.existsByCategoryNameIgnoreCase(request.categoryName())) {
             throw new BusinessConflictException("Category name already exists");
         }
         Category c = new Category();
@@ -61,9 +57,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public void delete(short id) {
         Category c = findEntity(id);
-        if (newsArticleRepository.existsByCategory_CategoryId(id)) {
-            throw new BusinessConflictException("Category is used by one or more news articles");
-        }
         repository.delete(c);
     }
 
@@ -80,12 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private CategoryResponse toResponse(Category c) {
-        return new CategoryResponse(
-                c.getCategoryId(),
-                c.getCategoryName(),
-                c.getCategoryDescription(),
-                c.getParentCategoryId(),
-                c.getActive()
-        );
+        return new CategoryResponse(c.getCategoryId(), c.getCategoryName(),
+                c.getCategoryDescription(), c.getParentCategoryId(), c.getActive());
     }
 }

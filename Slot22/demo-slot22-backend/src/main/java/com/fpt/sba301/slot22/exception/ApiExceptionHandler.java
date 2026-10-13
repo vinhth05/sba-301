@@ -2,12 +2,10 @@ package com.fpt.sba301.slot22.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.Instant;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
@@ -22,14 +20,5 @@ public class ApiExceptionHandler {
     public ResponseEntity<ApiError> handleConflict(BusinessConflictException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ApiError("CONFLICT", ex.getMessage(), Instant.now()));
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiError> handleValidationException(MethodArgumentNotValidException ex) {
-        String details = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining("; "));
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ApiError("VALIDATION_FAILED", details, Instant.now()));
     }
 }

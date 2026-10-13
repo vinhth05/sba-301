@@ -5,11 +5,11 @@ import jakarta.validation.constraints.Size;
 
 public record CategoryRequest(
     @NotBlank(message = "Category name is required")
-    @Size(max = 100, message = "Category name must not exceed 100 characters")
+    @Size(max = 100)
     String categoryName,
 
     @NotBlank(message = "Description is required")
-    @Size(max = 250, message = "Description must not exceed 250 characters")
+    @Size(max = 250)
     String categoryDescription,
 
     Short parentCategoryId,
