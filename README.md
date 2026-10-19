@@ -197,3 +197,62 @@ Toàn bộ các bài tập thực hành, củng cố và bài tập tổng hợp
   - `JpaEmployeeRepositoryTest`: JPA Slice test với `@DataJpaTest` kiểm thử entity mapping và truy vấn tìm theo chức vụ trên H2.
   - `EmployeeServiceIntegrationTest`: Integration test với `@SpringBootTest` kiểm thử context bootstrap và dependency wiring.
 - **Kiểm tra:** Đã chạy `mvn clean test` và **toàn bộ 12/12 bài kiểm thử đều PASS (0 failures, 0 errors, BUILD SUCCESS)**.
+
+---
+
+### 15. Slot 17 - JPA Entity, Repository, Service & Relationships
+- **Thư mục:** [`Slot17/slot17-funews-demo`](file:///d:/KY7/SBA301/SBA/Slot17/slot17-funews-demo)
+- **Dự án:** **FUNews Management JPA Architecture & Relationships**
+- **Công nghệ:** Spring Boot 3, Java 21, Spring Data JPA, H2 Database.
+- **Thành phần:** Entity mapping quan hệ OneToMany, ManyToOne giữa Category, NewsArticle, Tag; repository truy vấn nghiệp vụ.
+
+---
+
+### 16. Slot 18 - REST Controller & JPA Integration
+- **Thư mục:** [`Slot18/slot18-orchid-jpa-rest-lab`](file:///d:/KY7/SBA301/SBA/Slot18/slot18-orchid-jpa-rest-lab)
+- **Dự án:** **Orchid JPA REST Lab**
+- **Công nghệ:** Spring Boot 3, Spring Data JPA, RESTful Controllers.
+- **Thành phần:** Tích hợp đầy đủ tầng REST Controller với Spring Data JPA Repository, chuẩn hóa luồng nghiệp vụ dữ liệu.
+
+---
+
+### 17. Slot 20 - FullStack SPA Architecture (React + Spring Boot + CORS)
+- **Thư mục:** [`Slot20/demo_slot20`](file:///d:/KY7/SBA301/SBA/Slot20/demo_slot20)
+- **Dự án:** **FullStack SPA Integration & Cross-Origin Resource Sharing**
+- **Công nghệ:** Spring Boot REST Backend, React SPA Frontend, CORS configuration.
+- **Thành phần:** Cấu hình origin, Preflight OPTIONS, kết nối Frontend Vite ↔ Backend Spring Boot.
+
+---
+
+### 18. Slot 22 - Chapter 15 Part A: CRUD Backend
+- **Thư mục:** [`Slot22/demo-slot22-backend`](file:///d:/KY7/SBA301/SBA/Slot22/demo-slot22-backend)
+- **Dự án:** **Category CRUD RESTful Web Service**
+- **Công nghệ:** Spring Boot 3.2.5, Java 21, Spring Data JPA, Bean Validation, Microsoft SQL Server (`FUNewsManagementSBA301`).
+- **Thành phần:**
+  - 3 tầng kiến trúc chuẩn: `CategoryController` (`@CrossOrigin`) → `CategoryService` → `CategoryRepository`.
+  - Phân trang, tìm kiếm theo tên với Spring Data `Page<CategoryResponse>`.
+  - Nghiệp vụ kiểm soát xung đột: `409 Conflict` khi trùng tên hoặc khi xóa danh mục đang có tin tức tham chiếu.
+  - Xử lý ngoại lệ tập trung qua `@RestControllerAdvice` (`ApiExceptionHandler`).
+- **Kiểm tra:** Đã biên dịch `mvn -q -DskipTests compile` thành công (BUILD SUCCESS).
+
+---
+
+### 19. Slot 23 - Chapter 15 Part B: React CRUD Client (Axios, Forms & API Integration)
+- **Thư mục:** [`Slot23`](file:///d:/KY7/SBA301/SBA/Slot23)
+  - Dự án chính: [`Slot23/funews-react-client`](file:///d:/KY7/SBA301/SBA/Slot23/funews-react-client)
+  - Dự án mở rộng: [`Slot23/orchid-react-client`](file:///d:/KY7/SBA301/SBA/Slot23/orchid-react-client)
+- **Dự án:** **FUNews Category React CRUD Client (SPA Integration with Slot 22 Backend)**
+- **Công nghệ:** React 18, Vite 8.x, Axios, React Router DOM v6, React-Bootstrap, Bootstrap 5.
+- **Tính năng hoàn thành (20/20 tiêu chí theo chuẩn giáo trình Mục 6.19 & 6.20):**
+  - **READ**: Tải danh sách phân trang `Page<CategoryResponse>`, giải nén `response.data.content`, số đếm bản ghi `totalElements`.
+  - **SEARCH**: Form tìm kiếm theo từ khóa `keyword` với nút Search & Clear, tự động reset về trang 0.
+  - **PAGINATION**: Component `PaginationBar` hỗ trợ điều hướng trang hiện tại, Previous, Next và số trang linh hoạt.
+  - **CREATE**: Modal `CategoryForm` có kiểm soát (controlled form), xác thực dữ liệu client-side (required, max length 100/250), chuẩn hóa `parentCategoryId`, gửi `POST /api/categories` nhận 201 Created.
+  - **UPDATE**: Route độc lập `/categories/:id/edit`, prefill dữ liệu qua `useParams()`, xử lý race-condition bằng cleanup flag, gửi `PUT /api/categories/{id}` nhận 200 OK.
+  - **DELETE**: Xóa có hộp thoại xác nhận, quản lý trạng thái pending `deletingId`, bắt lỗi `409 Conflict` (bảo vệ danh mục có tin tức tham chiếu), tự động nạp lại danh sách sau khi xóa.
+  - **STATUS BADGES**: Huy hiệu trực quan `Active` (xanh lá) và `Inactive` (xám).
+  - **ERROR & RESILIENCE UX**: Xử lý đầy đủ lỗi 400 Bad Request, 404 Not Found, 409 Conflict, lỗi mất kết nối backend bằng Alert UI.
+  - **SEPARATED API MODULE**: Đóng gói toàn bộ HTTP calls trong `api/axiosClient.js` và `api/categoryApi.js`, không hard-code URL.
+  - **CONFIG & ENV**: Quản lý endpoint qua `.env` (`VITE_API_URL=http://localhost:8080/api`).
+- **Kiểm tra:** Đã chạy `npm run build` cho cả 2 dự án client đạt 100% SUCCESS, không có bất kỳ lỗi cú pháp hay cảnh báo nào.
+
