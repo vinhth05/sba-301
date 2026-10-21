@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Lab06JwtApplication<lab06jwt>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "fu.se.lab06jwt.Lab06JwtApplication",
+            "projectName": "lab06jwt",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
