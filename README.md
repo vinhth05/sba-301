@@ -256,3 +256,43 @@ Toàn bộ các bài tập thực hành, củng cố và bài tập tổng hợp
   - **CONFIG & ENV**: Quản lý endpoint qua `.env` (`VITE_API_URL=http://localhost:8080/api`).
 - **Kiểm tra:** Đã chạy `npm run build` cho cả 2 dự án client đạt 100% SUCCESS, không có bất kỳ lỗi cú pháp hay cảnh báo nào.
 
+---
+
+### 20. Slot 24 - Chapter 16 Part A: Securing REST Services with Spring Boot (Concepts, OAuth 2.0 & JWT)
+- **Thư mục:** [`Slot24`](file:///d:/KY7/SBA301/SBA/Slot24)
+- **Tài liệu & Nghiên cứu:** [`Slot24/README.md`](file:///d:/KY7/SBA301/SBA/Slot24/README.md)
+- **Postman Collection:** [`Slot24/SBA301_Slot24_Security_Collection.postman_collection.json`](file:///d:/KY7/SBA301/SBA/Slot24/SBA301_Slot24_Security_Collection.postman_collection.json)
+- **Chủ đề & Nội dung hoàn thành:**
+  - **Core Mental Model**: Phân biệt bản chất giữa Authentication ("Bạn là ai?") và Authorization ("Bạn được phép làm gì?"); ranh giới bảo mật (Security Boundary) trong kiến trúc REST.
+  - **Kiến trúc so sánh**: State-ful Session (Cookie/JSESSIONID) vs Stateless Token (JWT Bearer); ưu nhược điểm trong hệ thống phân tán và SPA.
+  - **OAuth 2.0 vs JWT**: 4 vai trò OAuth 2.0 (Resource Owner, Client, Authorization Server, Resource Server); khẳng định JWT là token format, OAuth 2.0 là authorization framework.
+  - **Giải phẫu JWT (JWT Anatomy)**: Header (`alg`, `typ`), Payload (Registered claims `sub`, `iat`, `exp`), Signature (HMAC-SHA256 vs Asymmetric RSA/ECDSA); phân biệt giữa mã hóa (encryption) và chữ ký (digital signature/integrity).
+  - **Spring Security Request Lifecycle**: Phân tích tường tận chuỗi filter `SecurityFilterChain` -> `CorsFilter` -> `JwtAuthenticationFilter` -> `AuthenticationManager` -> `DaoAuthenticationProvider` -> `UserDetailsService` -> `PasswordEncoder` -> `SecurityContextHolder`.
+  - **Break-It -> Diagnose -> Fix**: Bảng chẩn đoán 7 kịch bản lỗi bảo mật thường gặp trong dự án thực tế kèm nguyên nhân và cách khắc phục.
+  - **Call Stack Tracing**: Bản đồ truy vết method call end-to-end cho cả 2 chiều Login request và Protected Bearer request.
+  - **Kiểm tra cổng tích hợp**: Hoàn thành 12/12 tiêu chí Integration Gate G1 - G12.
+
+---
+
+### 21. Slot 25 - Chapter 16 Part B: Authentication & Authorization JWT Implementation (Lab 06)
+- **Thư mục dự án:** [`Slot25/slot25-security-jwt`](file:///d:/KY7/SBA301/SBA/Slot25/slot25-security-jwt)
+- **Tài liệu chi tiết:** [`Slot25/README.md`](file:///d:/KY7/SBA301/SBA/Slot25/README.md)
+- **Postman Collection:** [`Slot25/SBA301_Slot25_Security_JWT.postman_collection.json`](file:///d:/KY7/SBA301/SBA/Slot25/SBA301_Slot25_Security_JWT.postman_collection.json)
+- **Công nghệ:** Spring Boot 3.3.4, Java 21, Spring Security 6.x, Spring Data JPA, Bean Validation, JJWT 0.12.6, Microsoft SQL Server & H2 Database, MockMvc.
+- **Hiện thực hóa trọn vẹn 21 bước kỹ thuật (Step 1 → Step 21 theo chuẩn Lab 06 & Giáo trình Chapter 16 Part B):**
+  - **Step 1 & 2**: Khởi tạo dependencies chuẩn (Spring Web, Security, Data JPA, Validation, SQL Server, JJWT) và cấu hình Base64 secret key 512 bits, expiration 15 phút.
+  - **Step 3 & 4**: Entity `AppUser` (`id`, `email` unique, `password` hash, `role`, `enabled`) và repository `AppUserRepository` (`findByEmail`, `existsByEmail`).
+  - **Step 5**: Thiết kế DTOs dạng Record chuẩn Java 21: `SignupRequest`, `LoginRequest`, `AuthResponse`, `UserResponse`, `OrchidRequest`, `OrchidResponse`, `ApiErrorResponse`.
+  - **Step 6, 7 & 8**: Cấu hình bean `BCryptPasswordEncoder`, `UserDetailsService` ánh xạ sang `UserDetails`, `DaoAuthenticationProvider` và `AuthenticationManager`.
+  - **Step 9 & 11**: `AuthService` xử lý nghiệp vụ đăng ký (kiểm tra trùng lặp email trả về `409 Conflict`, mã hóa mật khẩu) và đăng nhập (xác thực qua `AuthenticationManager`, sinh token).
+  - **Step 10**: `JwtService` triển khai thư viện JJWT 0.12.6, ký HMAC-SHA256, parse claims, trích xuất roles, kiểm tra tính hợp lệ và thời hạn hết hạn của token.
+  - **Step 12**: `JwtAuthenticationFilter` kế thừa `OncePerRequestFilter`, phân tích `Authorization: Bearer <token>`, nạp danh tính và gắn `UsernamePasswordAuthenticationToken` vào `SecurityContextHolder`.
+  - **Step 13**: Cấu hình `SecurityFilterChain` chuẩn stateless REST: CORS cho phép React SPA, tắt CSRF, định tuyến public (`/auth/**`, `GET /orchids/**`) và protected (`/users/**`, `/admin/**`, CRUD hoa lan).
+  - **Step 14 & 15**: Controllers `AuthController` (`POST /auth/signup` 201 Created, `POST /auth/login` 200 OK + Bearer token) và `UserController` (`GET /users/me` đọc Principal từ SecurityContext, `GET /users`).
+  - **Step 16**: `OrchidController` triển khai CRUD hoa lan: GET công khai, POST/PUT yêu cầu đăng nhập, DELETE phân quyền riêng cho `ROLE_ADMIN` (`@PreAuthorize("hasRole('ADMIN')")`).
+  - **Step 17**: Tùy biến `RestAuthenticationEntryPoint` (JSON 401) và `RestAccessDeniedHandler` (JSON 403), không trả về trang lỗi HTML mặc định của Spring.
+  - **Step 18 & 19**: Tài liệu hóa và kiểm chứng luồng trace method call end-to-end cho cả 2 chiều đăng nhập và gọi API bảo vệ.
+  - **Step 20 & 21**: Bộ 15 bài kiểm thử tích hợp tự động với `MockMvc` bao phủ 100% các nhánh positive và negative.
+- **Kiểm tra tự động:** Chạy `mvn clean test` **toàn bộ 15/15 bài kiểm thử đều PASS (0 Failures, 0 Errors, BUILD SUCCESS)**.
+
+

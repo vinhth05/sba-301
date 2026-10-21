@@ -1,0 +1,371 @@
+{
+	"info": {
+		"_postman_id": "c1f7b8d4-59e2-416a-8d76-slot25secjwt01",
+		"name": "SBA301_Slot25_Security_JWT",
+		"description": "Collection for testing SBA301 Slot 24 & 25 (Chapter 16: Securing REST Services with Spring Boot & JWT)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Authentication",
+			"item": [
+				{
+					"name": "POST /auth/signup (Valid User)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"student.slot25@example.com\",\n  \"password\": \"Sba301@2026\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/signup",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "signup"]
+						}
+					}
+				},
+				{
+					"name": "POST /auth/signup (Duplicate Email -> 409 Conflict)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Sba301@2026\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/signup",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "signup"]
+						}
+					}
+				},
+				{
+					"name": "POST /auth/login (Admin -> Save Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.accessToken) {",
+									"    pm.collectionVariables.set('admin_token', jsonData.accessToken);",
+									"    console.log('Saved admin_token:', jsonData.accessToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Admin@123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "POST /auth/login (User -> Save Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.accessToken) {",
+									"    pm.collectionVariables.set('user_token', jsonData.accessToken);",
+									"    console.log('Saved user_token:', jsonData.accessToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"User@123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "POST /auth/login (Bad Password -> 401)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"WrongPass@999\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Protected User Endpoints",
+			"item": [
+				{
+					"name": "GET /users/me (With Valid Token -> 200)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me"]
+						}
+					}
+				},
+				{
+					"name": "GET /users/me (Without Token -> 401)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me"]
+						}
+					}
+				},
+				{
+					"name": "GET /users/me (With Tampered Token -> 401)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}tampered"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me"]
+						}
+					}
+				},
+				{
+					"name": "GET /users (List all users -> 200)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Role-Based Access Control (Admin)",
+			"item": [
+				{
+					"name": "GET /admin/dashboard (As Admin -> 200)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/dashboard",
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "dashboard"]
+						}
+					}
+				},
+				{
+					"name": "GET /admin/dashboard (As User -> 403 Forbidden)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/admin/dashboard",
+							"host": ["{{baseUrl}}"],
+							"path": ["admin", "dashboard"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Orchid Resources (Public & Protected)",
+			"item": [
+				{
+					"name": "GET /orchids (Public -> 200 without token)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/orchids",
+							"host": ["{{baseUrl}}"],
+							"path": ["orchids"]
+						}
+					}
+				},
+				{
+					"name": "POST /orchids (Without Token -> 401)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"orchidName\": \"Vanda Blue Magic\",\n  \"isNatural\": true,\n  \"orchidDescription\": \"Exquisite violet-blue petals.\",\n  \"isAttractive\": true,\n  \"orchidURL\": \"http://example.com/vanda.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orchids",
+							"host": ["{{baseUrl}}"],
+							"path": ["orchids"]
+						}
+					}
+				},
+				{
+					"name": "POST /orchids (As User -> 201 Created)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"orchidName\": \"Vanda Blue Magic\",\n  \"isNatural\": true,\n  \"orchidDescription\": \"Exquisite violet-blue petals.\",\n  \"isAttractive\": true,\n  \"orchidURL\": \"http://example.com/vanda.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/orchids",
+							"host": ["{{baseUrl}}"],
+							"path": ["orchids"]
+						}
+					}
+				},
+				{
+					"name": "DELETE /orchids/1 (As User -> 403 Forbidden)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/orchids/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["orchids", "1"]
+						}
+					}
+				},
+				{
+					"name": "DELETE /orchids/1 (As Admin -> 204 No Content)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/orchids/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["orchids", "1"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
