@@ -295,4 +295,26 @@ Toàn bộ các bài tập thực hành, củng cố và bài tập tổng hợp
   - **Step 20 & 21**: Bộ 15 bài kiểm thử tích hợp tự động với `MockMvc` bao phủ 100% các nhánh positive và negative.
 - **Kiểm tra tự động:** Chạy `mvn clean test` **toàn bộ 15/15 bài kiểm thử đều PASS (0 Failures, 0 Errors, BUILD SUCCESS)**.
 
+---
+
+### 22. Lab 06 - Secure REST Services with Spring Boot using JSON Web Token (JWT) Guide V2
+- **Thư mục dự án:** [`SBA301-Lab06/lab06jwt`](file:///d:/KY7/SBA301/SBA/SBA301-Lab06/lab06jwt)
+- **Tài liệu chi tiết:** [`SBA301-Lab06/README.md`](file:///d:/KY7/SBA301/SBA/SBA301-Lab06/README.md)
+- **Postman Collection:** [`SBA301-Lab06/SBA301_Lab06_Security_JWT.postman_collection.json`](file:///d:/KY7/SBA301/SBA/SBA301-Lab06/SBA301_Lab06_Security_JWT.postman_collection.json)
+- **Công nghệ & Baseline:** Spring Boot 3.3.4, Java 21 LTS, JJWT 0.12.6, Spring Security, Spring Data JPA, Jakarta Validation, SQL Server (`OrchidJWTLab`) & H2 in-memory test.
+- **Cấu trúc package mục tiêu:** `fu.se.lab06jwt` theo sát tài liệu `SBA301_Lab06_Detailed_Step_by_Step_Spring_Security_JWT_Guide_V2.pdf`.
+- **Thành phần kiến trúc:**
+  - `User`: Entity ánh xạ bảng `users`, implements `UserDetails`, tự động cập nhật timestamp, bảo mật mật khẩu.
+  - `UserRepository`: Truy vấn JPA `findByEmail` và `existsByEmail`.
+  - `RegisterUserDto`, `LoginUserDto`: Kiểm soát dữ liệu đầu vào bằng Bean Validation (`@NotBlank`, `@Email`, `@Size(min=8, max=72)`).
+  - `LoginResponse`, `UserResponse`: Record response loại bỏ hoàn toàn việc để lộ hash password ra bên ngoài.
+  - `ApplicationConfiguration`: Đăng ký `UserDetailsService`, `PasswordEncoder` (BCrypt), `DaoAuthenticationProvider`, `AuthenticationManager`.
+  - `JwtService`: Thư viện JJWT 0.12.6 với HMAC-SHA256, Base64 secret key 512-bit, giải mã claims an toàn, kiểm tra exp & signature.
+  - `JwtAuthenticationFilter`: `OncePerRequestFilter` trích xuất `Bearer <JWT>`, thẩm định token và thiết lập danh tính vào `SecurityContextHolder`.
+  - `SecurityConfiguration`: Cấu hình stateless session, vô hiệu hóa CSRF, mở `/auth/**`, bảo vệ `/users/**`, trả về 401 Unauthorized chuẩn xác qua `authenticationEntryPoint`.
+  - `AuthenticationService`, `AuthenticationController`: Xử lý nghiệp vụ đăng ký (201 Created), đăng nhập (200 OK + JWT).
+  - `GlobalExceptionHandler`: Xử lý lỗi trùng lặp (409 Conflict), sai mật khẩu (401 Unauthorized), lỗi validation (400 Bad Request).
+  - `UserService`, `UserController`: Cung cấp `/users/me` (đọc principal hiện tại) và `/users` (danh sách người dùng an toàn).
+- **Kiểm thử tự động:** Bộ 12 automated security tests tại `SecurityContractTest` đạt **12/12 PASS (BUILD SUCCESS)**, bao phủ toàn bộ Test Matrix T01 - T12.
+
 
