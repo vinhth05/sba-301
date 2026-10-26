@@ -19,7 +19,8 @@ public class ManyToManyLayeringTest {
 
     @BeforeAll
     static void setUpAll() {
-        testSessionFactory = HibernateUtil.buildSessionFactory("hibernate-test.cfg.xml");
+        // Load in-memory test configuration from application-test.properties
+        testSessionFactory = HibernateUtil.buildSessionFactory("application-test.properties");
         HibernateUtil.setSessionFactory(testSessionFactory);
         libraryService = new LibraryService();
     }
