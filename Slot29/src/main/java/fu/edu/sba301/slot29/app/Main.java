@@ -15,19 +15,19 @@ public class Main {
         LibraryService libraryService = new LibraryService();
 
         try {
-            // 1. Register Books
-            System.out.println(">>> 1. Registering Books into Library Catalog...");
-            Book b1 = libraryService.registerBook("978-0134685991", "Effective Java (3rd Edition)", "Joshua Bloch");
-            Book b2 = libraryService.registerBook("978-0132350884", "Clean Code", "Robert C. Martin");
-            Book b3 = libraryService.registerBook("978-0321356680", "Effective Java: Programming Language Guide", "Joshua Bloch");
-            System.out.println("Books registered successfully.");
+            // 1. Register Books (Idempotent: registers or fetches existing)
+            System.out.println(">>> 1. Registering/Fetching Books in Library Catalog...");
+            Book b1 = libraryService.findOrRegisterBook("978-0134685991", "Effective Java (3rd Edition)", "Joshua Bloch");
+            Book b2 = libraryService.findOrRegisterBook("978-0132350884", "Clean Code", "Robert C. Martin");
+            Book b3 = libraryService.findOrRegisterBook("978-0321356680", "Effective Java: Programming Language Guide", "Joshua Bloch");
+            System.out.println("Books ready: [ID " + b1.getId() + ", ID " + b2.getId() + ", ID " + b3.getId() + "]");
 
-            // 2. Register Students
-            System.out.println("\n>>> 2. Registering Students...");
-            Student s1 = libraryService.registerStudent("vinh.tranhien@fpt.edu.vn", "Hien Vinh", "Tran", 9.0);
-            Student s2 = libraryService.registerStudent("dat.tranvan@fpt.edu.vn", "Van Dat", "Tran", 8.8);
-            System.out.println("Registered Student 1 ID: " + s1.getId());
-            System.out.println("Registered Student 2 ID: " + s2.getId());
+            // 2. Register Students (Idempotent: registers or fetches existing)
+            System.out.println("\n>>> 2. Registering/Fetching Students...");
+            Student s1 = libraryService.findOrRegisterStudent("vinh.tranhien@fpt.edu.vn", "Hien Vinh", "Tran", 9.0);
+            Student s2 = libraryService.findOrRegisterStudent("dat.tranvan@fpt.edu.vn", "Van Dat", "Tran", 8.8);
+            System.out.println("Registered/Retrieved Student 1 ID: " + s1.getId());
+            System.out.println("Registered/Retrieved Student 2 ID: " + s2.getId());
 
             // 3. Borrow Books (Many-to-Many Association)
             System.out.println("\n>>> 3. Executing Borrow Operations (Many-to-Many Association)...");

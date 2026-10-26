@@ -32,6 +32,11 @@ public class LibraryService {
         return s;
     }
 
+    public Student findOrRegisterStudent(String email, String firstName, String lastName, Double marks) {
+        return studentRepository.getByEmail(email)
+                .orElseGet(() -> registerStudent(email, firstName, lastName, marks));
+    }
+
     public Book registerBook(String isbn, String title, String author) {
         if (bookRepository.getByIsbn(isbn).isPresent()) {
             throw new IllegalArgumentException("Book with ISBN '" + isbn + "' already exists.");
@@ -39,6 +44,11 @@ public class LibraryService {
         Book b = new Book(isbn, title, author);
         bookRepository.create(b);
         return b;
+    }
+
+    public Book findOrRegisterBook(String isbn, String title, String author) {
+        return bookRepository.getByIsbn(isbn)
+                .orElseGet(() -> registerBook(isbn, title, author));
     }
 
     /**
