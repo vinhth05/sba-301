@@ -1,0 +1,200 @@
+{
+  "info": {
+    "_postman_id": "a2-tranhienvinh-se1910",
+    "name": "A2TranHienVinh_SE1910 - FUNews RESTful API",
+    "description": "Postman Collection for Assignment 02 - SBA301 - Tran Hien Vinh (CE190881) - SE1910",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Login - Admin (Steve Paris)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"SteveParis@FUNewsManagement.org\",\n  \"password\": \"@1\"\n}"
+            },
+            "url": "http://localhost:8080/api/auth/login"
+          }
+        },
+        {
+          "name": "Login - Staff (Emma William)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"EmmaWilliam@FUNewsManagement.org\",\n  \"password\": \"@1\"\n}"
+            },
+            "url": "http://localhost:8080/api/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Public News Articles",
+      "item": [
+        {
+          "name": "Get Active News (No Auth Required)",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/news-articles/public/active"
+          }
+        },
+        {
+          "name": "Search News Articles (Filters)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:8080/api/news-articles?keyword=Alumni&categoryId=4&status=true",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "news-articles"],
+              "query": [
+                { "key": "keyword", "value": "Alumni" },
+                { "key": "categoryId", "value": "4" },
+                { "key": "status", "value": "true" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Article By ID",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/news-articles/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Staff Functions",
+      "item": [
+        {
+          "name": "Staff - Get My News History (Staff ID = 1)",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/news-articles/staff/1/history"
+          }
+        },
+        {
+          "name": "Staff - Create News Article",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newsTitle\": \"FU Tech Innovation Summit 2026\",\n  \"headline\": \"University FU hosts annual international technology and AI conference\",\n  \"newsContent\": \"The event gathered over 500 scholars and tech industry leaders discussing cutting-edge AI.\",\n  \"newsSource\": \"Internal FU Portal\",\n  \"categoryID\": 1,\n  \"newsStatus\": true,\n  \"createdByID\": 1,\n  \"imageUrl\": \"alba.jpg\",\n  \"tagIds\": [1, 2, 4]\n}"
+            },
+            "url": "http://localhost:8080/api/news-articles"
+          }
+        },
+        {
+          "name": "Staff - Update News Article",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newsTitle\": \"FU Tech Innovation Summit 2026 (Updated)\",\n  \"headline\": \"Updated Headline Summary\",\n  \"newsContent\": \"Updated detailed content with more workshop schedules.\",\n  \"newsSource\": \"Official FU Newsroom\",\n  \"categoryID\": 1,\n  \"newsStatus\": true,\n  \"updatedByID\": 1,\n  \"imageUrl\": \"damari.jpg\",\n  \"tagIds\": [1, 2]\n}"
+            },
+            "url": "http://localhost:8080/api/news-articles/1"
+          }
+        },
+        {
+          "name": "Staff - Delete News Article",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8080/api/news-articles/999"
+          }
+        },
+        {
+          "name": "Staff - Get All Categories",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/categories"
+          }
+        },
+        {
+          "name": "Staff - Create Category",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryName\": \"Sports & Athletics\",\n  \"categoryDesciption\": \"University sports tournaments and student athletic accomplishments\",\n  \"parentCategoryID\": 2,\n  \"isActive\": true\n}"
+            },
+            "url": "http://localhost:8080/api/categories"
+          }
+        },
+        {
+          "name": "Staff - Delete Category (Rule: Fail if contains articles)",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8080/api/categories/4"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Admin Functions",
+      "item": [
+        {
+          "name": "Admin - Get All Accounts",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/accounts"
+          }
+        },
+        {
+          "name": "Admin - Create Account",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountName\": \"Alexander Wright\",\n  \"accountEmail\": \"alexander.wright@FUNewsManagement.org\",\n  \"accountRole\": 2,\n  \"accountPassword\": \"@1\"\n}"
+            },
+            "url": "http://localhost:8080/api/accounts"
+          }
+        },
+        {
+          "name": "Admin - Update Account",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountName\": \"Alexander Wright (Senior Staff)\",\n  \"accountEmail\": \"alexander.wright@FUNewsManagement.org\",\n  \"accountRole\": 2,\n  \"accountPassword\": \"@1\"\n}"
+            },
+            "url": "http://localhost:8080/api/accounts/1"
+          }
+        },
+        {
+          "name": "Admin - Delete Account (Rule: Fail if created articles)",
+          "request": {
+            "method": "DELETE",
+            "url": "http://localhost:8080/api/accounts/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Tags",
+      "item": [
+        {
+          "name": "Get All Tags",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/tags"
+          }
+        }
+      ]
+    }
+  ]
+}
