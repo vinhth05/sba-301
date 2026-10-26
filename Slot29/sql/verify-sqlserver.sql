@@ -15,7 +15,8 @@ LEFT JOIN BOOKS b ON b.id = sb.book_id
 ORDER BY s.id, b.id;
 
 SELECT * FROM STUDENTS_BOOKS ORDER BY student_id, book_id;
-SELECT * FROM BORROWINGS ORDER BY id;
+SELECT COUNT(*) AS total_students FROM STUDENTS;
+SELECT COUNT(*) AS total_books FROM BOOKS;
 
 -- Verify both foreign keys and the unique/primary constraint of the join table.
 SELECT fk.name AS foreign_key_name,
