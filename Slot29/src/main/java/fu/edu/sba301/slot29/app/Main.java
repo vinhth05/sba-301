@@ -8,9 +8,7 @@ import fu.edu.sba301.slot29.util.HibernateUtil;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("============================================================================");
-        System.out.println("   SBA301 - SLOT 29: MANY-TO-MANY DEMO, DAO, REPOSITORY & SERVICE LAYERING ");
-        System.out.println("============================================================================\n");
+
 
         LibraryService libraryService = new LibraryService();
 
