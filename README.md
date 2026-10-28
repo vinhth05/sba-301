@@ -317,4 +317,58 @@ Toàn bộ các bài tập thực hành, củng cố và bài tập tổng hợp
   - `UserService`, `UserController`: Cung cấp `/users/me` (đọc principal hiện tại) và `/users` (danh sách người dùng an toàn).
 - **Kiểm thử tự động:** Bộ 12 automated security tests tại `SecurityContractTest` đạt **12/12 PASS (BUILD SUCCESS)**, bao phủ toàn bộ Test Matrix T01 - T12.
 
+---
+
+### 23. Slot 28 - Chapter 17 Part A: Hibernate Architecture, Configuration, Mapping & HQL
+- **Thư mục:** [`Slot28`](file:///d:/KY7/SBA301/SBA/Slot28)
+- **Dự án:** **Hibernate Core Architecture, XML/Annotation Configuration & HQL Queries**
+- **Công nghệ:** Java 21 LTS, Hibernate 6.4.4.Final, Microsoft SQL Server & H2 Database, JUnit 5.
+- **Thành phần:**
+  - Khởi tạo kiến trúc Hibernate: `Configuration`, `SessionFactory` singleton, `Session` unit of work.
+  - Entity Mapping: `@Entity`, `@Table`, `@Id`, `@GeneratedValue(IDENTITY)`, `@Column(unique, length)`.
+  - HQL (Hibernate Query Language): Truy vấn hướng đối tượng an toàn với tham số định danh (`:param`).
+  - Kiểm thử tự động với H2 in-memory test database đạt 100% PASS.
+
+---
+
+### 24. Slot 29 - Chapter 17 Part B: Many-to-Many Association, DAO, Repository & Service
+- **Thư mục:** [`Slot29`](file:///d:/KY7/SBA301/SBA/Slot29)
+- **Dự án:** **Library Many-to-Many Relationship & 3-Tier Layering Architecture**
+- **Công nghệ:** Java 21 LTS, Hibernate 6.4.4.Final, SQL Server (`LibraryDB`), H2 Database, JUnit 5.
+- **Thành phần:**
+  - Thiết kế quan hệ Many-to-Many: `Student` (Owning Side với `@JoinTable` `STUDENTS_BOOKS`) ↔ `Book` (Inverse Side với `mappedBy = "books"`).
+  - Phương thức đồng bộ hai chiều (Bidirectional helper methods: `addBook`, `removeBook`).
+  - Phân tầng 3 lớp: `StudentDAO` / `BookDAO` → `StudentRepository` / `BookRepository` → `LibraryService`.
+  - Nghiệp vụ mượn/trả sách, bảo vệ cascade (xóa sinh viên không xóa sách thư viện).
+  - Kiểm thử tự động 4/4 test cases và kịch bản SQL Server verification đạt 100% PASS.
+
+---
+
+### 25. Slot 30 - Chapter 18 Part A: Hibernate CRUD Application, Layers & Configuration
+- **Thư mục:** [`Slot30`](file:///d:/KY7/SBA301/SBA/Slot30)
+- **Dự án:** **Hibernate CRUD Application Architecture, Persistence & Business Validation**
+- **Tài liệu chuyên sâu:** [`Slot30/KNOWLEDGEBASE.md`](file:///d:/KY7/SBA301/SBA/Slot30/KNOWLEDGEBASE.md)
+- **Kịch bản kiểm chứng SQL:** [`Slot30/sql/verify-sqlserver.sql`](file:///d:/KY7/SBA301/SBA/Slot30/sql/verify-sqlserver.sql)
+- **Công nghệ:** Java 21 LTS, Hibernate 6.4.4.Final, Microsoft SQL Server (`LibraryDB`), H2 In-Memory Database, JUnit 5.
+- **Tính năng hoàn thành (26/26 bước theo giáo trình Chapter 18 Part A):**
+  - **Structure:** Thiết kế package chuẩn mực: `fu.edu.sba301.ch18` (entity, dao, repository, service, util, app).
+  - **Infrastructure:** `HibernateUtil` singleton quản lý `SessionFactory`, hỗ trợ cấu hình SQL Server và H2 fallback an toàn.
+  - **Entities:** `Student` (`STUDENTS` table, PK IDENTITY, unique email, firstName, lastName, marks, books association) và `Book` (`BOOKS` table).
+  - **Full Persistence CRUD (StudentDAO):**
+    - `save(student)`: Mở session, quản lý transaction, persist, commit/rollback khi có lỗi.
+    - `findAll()`: Typed query `"from Student s order by s.id"`.
+    - `findById(id)`: Nạp entity theo PK qua `session.get()` trả về `Optional`.
+    - `findByEmail(email)`: Truy vấn HQL tham số định danh `:email`.
+    - `updateMarks(id, marks)`: Cơ chế **Managed Dirty Checking** tự động phát hiện thay đổi và sinh câu lệnh UPDATE tại commit.
+    - `update(detached)`: Cơ chế **Detached Merge** qua `session.merge()` sao chép thuộc tính và trả về managed instance mới.
+    - `delete(id)`: Xóa entity có kiểm soát khóa ngoại (`s.getBooks().clear(); session.remove(s)`).
+    - `findPage(offset, limit)`: Phân trang windowed query với `setFirstResult()` và `setMaxResults()`.
+    - `executeAtomicExperiment(s1, s2)`: Thí nghiệm chứng minh tính nguyên tử và rollback khi có lỗi (Step 21).
+  - **Repository Layer:** `IStudentRepository` che giấu hoàn toàn Hibernate Session/HQL khỏi tầng trên.
+  - **Service Layer & Validation:** `StudentService` kiểm soát ranh giới nghiệp vụ (bắt buộc email hợp lệ, kiểm tra trùng lặp email, kiểm tra khoảng điểm 0..10, ném ngoại lệ có nghĩa thay vì null/NPE).
+  - **Composition Root & Main:** `Main.java` khởi tạo cây phụ thuộc và chạy toàn bộ luồng nghiệp vụ end-to-end với SQL Server.
+  - **Automated Tests:** 15/15 bài kiểm thử tự động tại `StudentCrudLayeringTest.java` đạt **100% PASS (BUILD SUCCESS)** bao phủ toàn bộ Test Matrix C01 - L01.
+  - **Bridge to JavaFX:** Cấu trúc tầng Service sẵn sàng 100% để nối với JavaFX `StudentController` ở Slot 31 (Part B).
+
+
 
