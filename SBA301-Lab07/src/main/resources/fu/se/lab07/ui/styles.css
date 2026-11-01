@@ -1,0 +1,151 @@
+/* SBA301 Lab 07 - Modern UI Theme for JavaFX */
+
+.root {
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #f4f6f9;
+}
+
+/* Header Banner */
+.header-box {
+    -fx-background-color: linear-gradient(to right, #1e3c72, #2a5298);
+    -fx-padding: 16px 24px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 8, 0, 0, 3);
+}
+
+.header-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.header-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #d1d8e0;
+}
+
+/* Form Card */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #e1e8ed;
+    -fx-border-width: 1px;
+    -fx-padding: 18px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 6, 0, 0, 2);
+}
+
+.card-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 0 0 8px 0;
+}
+
+/* Form Fields */
+.text-field, .password-field {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 6px;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 6px;
+    -fx-border-width: 1.2px;
+    -fx-padding: 7px 10px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #1e293b;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #2563eb;
+    -fx-background-color: #f8fafc;
+    -fx-effect: dropshadow(three-pass-box, rgba(37,99,235,0.2), 4, 0, 0, 0);
+}
+
+.form-label {
+    -fx-font-weight: 600;
+    -fx-text-fill: #475569;
+}
+
+/* Buttons */
+.btn {
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 16px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 3, 0, 0, 1);
+}
+
+.btn-primary {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+}
+.btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.btn-success {
+    -fx-background-color: #10b981;
+    -fx-text-fill: white;
+}
+.btn-success:hover {
+    -fx-background-color: #059669;
+}
+
+.btn-warning {
+    -fx-background-color: #f59e0b;
+    -fx-text-fill: white;
+}
+.btn-warning:hover {
+    -fx-background-color: #d97706;
+}
+
+.btn-danger {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+}
+.btn-danger:hover {
+    -fx-background-color: #dc2626;
+}
+
+.btn-secondary {
+    -fx-background-color: #64748b;
+    -fx-text-fill: white;
+}
+.btn-secondary:hover {
+    -fx-background-color: #475569;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 8px 8px 0 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+    -fx-padding: 8px;
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #dbeafe;
+}
+.table-row-cell:filled:selected .text {
+    -fx-fill: #1e3a8a;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+.table-row-cell:odd {
+    -fx-background-color: #f8fafc;
+}
