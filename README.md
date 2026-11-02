@@ -370,5 +370,34 @@ Toàn bộ các bài tập thực hành, củng cố và bài tập tổng hợp
   - **Automated Tests:** 15/15 bài kiểm thử tự động tại `StudentCrudLayeringTest.java` đạt **100% PASS (BUILD SUCCESS)** bao phủ toàn bộ Test Matrix C01 - L01.
   - **Bridge to JavaFX:** Cấu trúc tầng Service sẵn sàng 100% để nối với JavaFX `StudentController` ở Slot 31 (Part B).
 
+---
+
+### 26. Assignment 02 - FUNewsManagementSystem (Full-Stack CRUD Application)
+- **Thư mục dự án:** [`A2TranHienVinh_SE1910`](file:///d:/KY7/SBA301/SBA/A2TranHienVinh_SE1910)
+- **Tài liệu chi tiết:** [`A2TranHienVinh_SE1910/README.md`](file:///d:/KY7/SBA301/SBA/A2TranHienVinh_SE1910/README.md)
+- **Postman Collection:** [`A2TranHienVinh_SE1910/A2TranHienVinh_SE1910.postman_collection.json`](file:///d:/KY7/SBA301/SBA/A2TranHienVinh_SE1910/A2TranHienVinh_SE1910.postman_collection.json)
+- **Công nghệ:** Spring Boot 3 RESTful API (3-Layer Architecture), Spring Data JPA, MS SQL Server (`A2TranHienVinh_SE1910`), ReactJS (Vite), React-Bootstrap, Axios.
+- **Tính năng & Quy tắc nghiệp vụ:**
+  - Public News Portal: Khách xem tin tức Active không cần đăng nhập, tìm kiếm và xem chi tiết tin tức.
+  - Phân hệ Admin: Quản lý tài khoản (CRUD), chặn xóa tài khoản đã từng tạo bài viết.
+  - Phân hệ Staff: Quản lý danh mục (chặn xóa danh mục đang chứa bài viết), quản lý bài viết tin tức và tags, cập nhật profile cá nhân, xem lịch sử tạo tin của chính mình.
+  - Giao diện Popup Dialog cho Thêm/Sửa và Modal Confirmation cho Xóa.
+
+---
+
+### 27. Assignment 03 - FUMiniHotelSystem (Securing REST Services with Spring Security & JWT)
+- **Thư mục dự án:** [`A3TranHienVinh_SE1910`](file:///d:/KY7/SBA301/SBA/A3TranHienVinh_SE1910)
+- **Tài liệu chi tiết:** [`A3TranHienVinh_SE1910/README.md`](file:///d:/KY7/SBA301/SBA/A3TranHienVinh_SE1910/README.md)
+- **Postman Collection:** [`A3TranHienVinh_SE1910/A3TranHienVinh_SE1910.postman_collection.json`](file:///d:/KY7/SBA301/SBA/A3TranHienVinh_SE1910/A3TranHienVinh_SE1910.postman_collection.json)
+- **Công nghệ:** Spring Boot 3 RESTful API, Spring Security 6, JJWT 0.12.6, Spring Data JPA, MS SQL Server (`A3TranHienVinh_SE1910`), ReactJS (Vite), React-Bootstrap, Axios.
+- **Tính năng & Quy tắc nghiệp vụ:**
+  - Cấu hình tài khoản Staff lấy từ `application.properties` (`hotel.staff.email=staff@fuminhotel.com`, mật khẩu `@1`).
+  - Xác thực Khách hàng bằng Email và Password từ bảng `Customer` sinh JWT token an toàn.
+  - Public Room Portal: Khách xem phòng Active, tìm kiếm và xem chi tiết tiện nghi không cần xác thực.
+  - Phân hệ Staff: Quản lý thông tin phòng (Quy tắc nghiệp vụ: Nếu phòng đã có lịch sử giao dịch trong `BookingDetail`, nút xóa chuyển trạng thái sang Inactive `RoomStatus = 0`; nếu chưa có, xóa vĩnh viễn), Quản lý khách hàng, Quản lý đơn đặt phòng.
+  - Phân hệ Customer: Đăng ký thành viên, Đặt phòng trực tuyến hỗ trợ chọn nhiều phòng cùng lúc (Multi-room) và tự tính tổng tiền theo số đêm, Quản lý hồ sơ cá nhân và đổi mật khẩu, Xem lịch sử và chi tiết các đơn đặt phòng.
+  - Giao diện Popup Dialog cho Thêm/Sửa và Modal Confirmation cho Xóa.
+
+
 
 

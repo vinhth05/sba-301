@@ -1,0 +1,420 @@
+{
+  "info": {
+    "_postman_id": "a3-tranhienvinh-se1910-collection",
+    "name": "A3TranHienVinh_SE1910 - FUMiniHotelSystem API",
+    "description": "SBA301 Assignment 03 - Postman Collection for Testing Spring Boot 3 RESTful API secured with Spring Security and JWT. Student: Tran Hien Vinh (CE190881) - Class: SE1910",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "staffToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "customerToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "1.1 Login as Staff (from application.properties)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set('staffToken', jsonData.token);",
+                  "    pm.environment.set('staffToken', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"staff@fuminhotel.com\",\n  \"password\": \"@1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "1.2 Login as Customer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set('customerToken', jsonData.token);",
+                  "    pm.environment.set('customerToken', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"an.nguyen@fuminhotel.com\",\n  \"password\": \"@1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "1.3 Register New Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerFullName\": \"Hoàng Gia Bảo\",\n  \"telephone\": \"0933445566\",\n  \"emailAddress\": \"bao.hoang@fuminhotel.com\",\n  \"customerBirthday\": \"1996-09-12\",\n  \"password\": \"@1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Public Endpoints (No Auth Required)",
+      "item": [
+        {
+          "name": "2.1 Get Active Rooms",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/rooms/public",
+              "host": ["{{baseUrl}}"],
+              "path": ["rooms", "public"]
+            }
+          }
+        },
+        {
+          "name": "2.2 Search Public Rooms (Keyword & Type)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/rooms/public/search?keyword=Deluxe&roomTypeID=2",
+              "host": ["{{baseUrl}}"],
+              "path": ["rooms", "public", "search"],
+              "query": [
+                { "key": "keyword", "value": "Deluxe" },
+                { "key": "roomTypeID", "value": "2" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2.3 Get Room Details by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/rooms/public/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["rooms", "public", "1"]
+            }
+          }
+        },
+        {
+          "name": "2.4 Get Public Room Types",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/room-types/public",
+              "host": ["{{baseUrl}}"],
+              "path": ["room-types", "public"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Customer Functions (JWT Bearer Token)",
+      "item": [
+        {
+          "name": "3.1 Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/customer/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["customer", "profile"]
+            }
+          }
+        },
+        {
+          "name": "3.2 Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customerToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerFullName\": \"Nguyễn Văn An (VIP)\",\n  \"telephone\": \"0901234567\",\n  \"customerBirthday\": \"1995-05-15\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customer/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["customer", "profile"]
+            }
+          }
+        },
+        {
+          "name": "3.3 Create Online Booking Reservation (Multi-room)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customerToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingDate\": \"2026-11-05\",\n  \"bookingDetails\": [\n    {\n      \"roomID\": 1,\n      \"startDate\": \"2026-11-15\",\n      \"endDate\": \"2026-11-18\"\n    },\n    {\n      \"roomID\": 2,\n      \"startDate\": \"2026-11-15\",\n      \"endDate\": \"2026-11-18\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings"]
+            }
+          }
+        },
+        {
+          "name": "3.4 View My Booking History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/customer/bookings",
+              "host": ["{{baseUrl}}"],
+              "path": ["customer", "bookings"]
+            }
+          }
+        },
+        {
+          "name": "3.5 Cancel My Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{customerToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/customer/bookings/1/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["customer", "bookings", "1", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Staff Functions (ROLE_STAFF Required)",
+      "item": [
+        {
+          "name": "4.1 Get All Rooms (Staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staffToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rooms",
+              "host": ["{{baseUrl}}"],
+              "path": ["rooms"]
+            }
+          }
+        },
+        {
+          "name": "4.2 Create Room",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staffToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomNumber\": \"STD-999\",\n  \"roomDetailDescription\": \"Phòng thử nghiệm mới\",\n  \"roomMaxCapacity\": 2,\n  \"roomTypeID\": 1,\n  \"roomStatus\": 1,\n  \"roomPricePerDay\": 600000\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rooms",
+              "host": ["{{baseUrl}}"],
+              "path": ["rooms"]
+            }
+          }
+        },
+        {
+          "name": "4.3 Business Rule: Delete Rented Room -> Status Changed to Inactive",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staffToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rooms/3",
+              "host": ["{{baseUrl}}"],
+              "path": ["rooms", "3"]
+            }
+          }
+        },
+        {
+          "name": "4.4 Business Rule: Delete Unrented Room -> Hard Deleted",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staffToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rooms/9",
+              "host": ["{{baseUrl}}"],
+              "path": ["rooms", "9"]
+            }
+          }
+        },
+        {
+          "name": "4.5 Get All Customers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staffToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers"]
+            }
+          }
+        },
+        {
+          "name": "4.6 Get All Bookings (Staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staffToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/all",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "all"]
+            }
+          }
+        },
+        {
+          "name": "4.7 Update Booking Status (Staff)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{staffToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/2/status?status=0",
+              "host": ["{{baseUrl}}"],
+              "path": ["bookings", "2", "status"],
+              "query": [
+                { "key": "status", "value": "0" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
