@@ -1,3 +1,9 @@
+/**
+ * Student Name: Trần Hiển Vinh
+ * Student ID: CE190881
+ * Class: SE1910
+ * Course: SBA301 - Integrate Single Page Application with Spring Boot
+ */
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
