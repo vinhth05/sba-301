@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-A2TranHienVinhApplication<A2TranHienVinh_SE1910>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.fpt.sba301.a2.A2TranHienVinhApplication",
+            "projectName": "A2TranHienVinh_SE1910",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
